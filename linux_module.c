@@ -2,6 +2,7 @@
 #include<linux/kernel.h>
 #include<linux/usb.h>
 #include<linux/usb/hcd.h>
+#include<libusb-1.0/libusb.h>
 
 MODULE_LICENSE("GPL");
 
@@ -13,10 +14,13 @@ int usb_boot_init(void) {
     //Listing of usb devices
     int chix = 0;
     //Required ID;
-    int prodID = 9999999;
     bool flag = false;
     struct usb_device *dev,*childdev = NULL;
     struct usb_bus *bus = NULL;
+
+    //hardcode the needed productID or vendorID
+    __le16 deviceID = 0;
+    __le16 prodID = 0;
 
     lists_for_each_entry(bus,&usb_bus_list,bus_list) {
         printk("\n USB Bus : %d",bus->busnum);
